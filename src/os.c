@@ -56,6 +56,9 @@ static size_t os_alloc_granularity = 4096;
 // if non-zero, use large page allocation
 static size_t large_os_page_size = 0;
 
+// if non-zero, store the original large page size
+static size_t original_large_os_page_size = 0;
+
 // OS (small) page size
 size_t _mi_os_page_size() {
   return os_page_size;
@@ -125,6 +128,7 @@ void _mi_os_init(void) {
           ok = (err == ERROR_SUCCESS);
           if (ok) {
             large_os_page_size = GetLargePageMinimum();
+            original_large_os_page_size = large_os_page_size;
           }
         }
       }
@@ -197,6 +201,11 @@ static void* mi_win_virtual_alloc(void* addr, size_t size, size_t try_alignment,
   if (use_large_os_page(size, try_alignment)) {
     p = mi_win_virtual_allocx(addr, size, try_alignment, MEM_LARGE_PAGES | flags);
     // fall back to non-large page allocation on error (`p == NULL`).
+    if (p == NULL) {
+      // disable larege page allocation.  okay to be non atomic
+      large_os_page_size = 0;
+      // TODO: we may need to re-enable this after a long while
+    }
   }
   if (p == NULL) {
     p = mi_win_virtual_allocx(addr, size, try_alignment, flags);
