@@ -1,0 +1,10 @@
+# Defines the Google C++ style for automatic reformatting.
+# http://clang.llvm.org/docs/ClangFormatStyleOptions.html
+BasedOnStyle: Google
+ColumnLimit: 120
+DerivePointerAlignment: false
+BinPackArguments: false
+BinPackParameters: false
+AlwaysBreakAfterReturnType: TopLevel
+AlwaysBreakAfterDefinitionReturnType: TopLevel
+SortIncludes: false

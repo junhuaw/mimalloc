@@ -4,4 +4,6 @@ ide/vs2017/*.user
 ide/vs2017/.vs
 out/
 docs/
+build/
 *.zip
+.vs/
