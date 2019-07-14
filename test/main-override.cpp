@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <vector>
 
 #include <mimalloc.h>
 
@@ -36,9 +37,18 @@ int main() {
   free(s);
   Test* t = new Test(42);
   delete t;
-  int err = mi_posix_memalign(&p1,32,60);
+  int err = mi_posix_memalign(&p1, 32, 60);
   if (!err) free(p1);
   free(p);
+
+  std::vector<void*> v(100000);
+  for (auto& pt : v) {
+    pt = malloc(rand());
+  }
+
+  for (auto& pt : v) {
+    free(pt);
+  }
   mi_collect(true);
   mi_stats_print(NULL);  // MIMALLOC_VERBOSE env is set to 2
   return 0;
