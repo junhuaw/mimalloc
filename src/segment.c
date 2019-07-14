@@ -755,10 +755,10 @@ static mi_page_t* mi_segment_huge_page_alloc(size_t size, mi_segments_tld_t* tld
 
 mi_page_t* _mi_segment_page_alloc(size_t block_size, mi_segments_tld_t* tld, mi_os_tld_t* os_tld) {
   mi_page_t* page;
-  if (block_size <= (MI_SMALL_PAGE_SIZE/16)*3) {
+  if (block_size <= (MI_SMALL_PAGE_SIZE / 3)) {
     page = mi_segment_small_page_alloc(tld,os_tld);
   }
-  else if (block_size <= (MI_MEDIUM_PAGE_SIZE/16)*3) {
+  else if (block_size <= (MI_MEDIUM_PAGE_SIZE / 3)) {
     page = mi_segment_medium_page_alloc(tld, os_tld);
   }
   else if (block_size < (MI_LARGE_SIZE_MAX - sizeof(mi_segment_t))) {

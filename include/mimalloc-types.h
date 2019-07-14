@@ -77,8 +77,8 @@ terms of the MIT license. A copy of the license can be found in the file
 // Sizes for 64-bit, divide by two for 32-bit
 #define MI_SMALL_PAGE_SHIFT               (13 + MI_INTPTR_SHIFT)      // 64kb
 #define MI_MEDIUM_PAGE_SHIFT              ( 3 + MI_SMALL_PAGE_SHIFT)  // 512kb
-#define MI_LARGE_PAGE_SHIFT               ( 3 + MI_MEDIUM_PAGE_SHIFT) // 4mb
-#define MI_SEGMENT_SHIFT                  ( MI_LARGE_PAGE_SHIFT)      // 4mb
+#define MI_LARGE_PAGE_SHIFT               ( 2 + MI_MEDIUM_PAGE_SHIFT) // 2mb
+#define MI_SEGMENT_SHIFT                  ( MI_LARGE_PAGE_SHIFT)      // 2mb
 
 // Derived constants
 #define MI_SEGMENT_SIZE                   (1<<MI_SEGMENT_SHIFT)
