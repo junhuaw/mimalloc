@@ -129,6 +129,7 @@ void _mi_os_init(void) {
           if (ok) {
             large_os_page_size = GetLargePageMinimum();
             original_large_os_page_size = large_os_page_size;
+            _mi_warning_message("enable large OS page support, page_size %lu\n", large_os_page_size);
           }
         }
       }
@@ -198,13 +199,25 @@ static void* mi_win_virtual_allocx(void* addr, size_t size, size_t try_alignment
 
 static void* mi_win_virtual_alloc(void* addr, size_t size, size_t try_alignment, DWORD flags) {
   void* p = NULL;
-  if (use_large_os_page(size, try_alignment)) {
+  if (use_large_os_page(size, try_alignment) && ((flags & (MEM_RESERVE | MEM_COMMIT)) == (MEM_RESERVE | MEM_COMMIT))) {
     p = mi_win_virtual_allocx(addr, size, try_alignment, MEM_LARGE_PAGES | flags);
     // fall back to non-large page allocation on error (`p == NULL`).
     if (p == NULL) {
       // disable larege page allocation.  okay to be non atomic
       large_os_page_size = 0;
+      _mi_warning_message("large page allocation failed err=%lu; parameters %I64x, %I64x, %I64x, flags=0x%x\n",
+                          GetLastError(),
+                          addr,
+                          size,
+                          try_alignment,
+                          MEM_LARGE_PAGES | flags);
       // TODO: we may need to re-enable this after a long while
+    } else {
+      // _mi_warning_message("large page allocation succeeded parameters %I64x, %I64x, %I64x, flags=0x%x\n",
+      //                     addr,
+      //                     size,
+      //                     try_alignment,
+      //                     MEM_LARGE_PAGES | flags);
     }
   }
   if (p == NULL) {
