@@ -5,6 +5,4 @@ ColumnLimit: 120
 DerivePointerAlignment: false
 BinPackArguments: false
 BinPackParameters: false
-AlwaysBreakAfterReturnType: TopLevel
-AlwaysBreakAfterDefinitionReturnType: TopLevel
 SortIncludes: false
